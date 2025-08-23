@@ -443,6 +443,19 @@ export function gridInterfaceReducer<T extends GridInterfaceState>(
           dir: Direction.Down,
         },
       };
+    } else if (key.k === KeyK.StartOfRow) {
+      state = clearSelection(state);
+      return {
+        ...state,
+        wasEntryClick: false,
+        active: {
+          ...state.active,
+          ...((state.active.dir === Direction.Down ||
+            (isPuzzleState(state) && state.prefs?.advanceOnPerpendicular)) &&
+            moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, moveUp(state.grid, state.active)))))))))))))))),
+          dir: Direction.Down,
+        },
+      };
     } else if (key.k === KeyK.AllowedCharacter) {
       const char = key.c.toUpperCase();
       state = enterText(state, char);

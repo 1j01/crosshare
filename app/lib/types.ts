@@ -470,6 +470,10 @@ export enum KeyK {
   Block,
   Undo,
   Redo,
+  StartOfRow,
+  EndOfRow,
+  StartOfColumn,
+  EndOfColumn,
 }
 
 export const ALLOWABLE_GRID_CHARS = /^[A-Za-z0-9Ññ&]$/;
@@ -496,6 +500,7 @@ export function fromKeyboardEvent(event: {
     return null;
   }
 
+  console.log('Key event:', event);
   if (event.metaKey || event.ctrlKey) {
     const key = event.key.toLowerCase();
     switch (key) {
@@ -503,6 +508,14 @@ export function fromKeyboardEvent(event: {
         return { k: event.shiftKey ? KeyK.Redo : KeyK.Undo };
       case 'y':
         return { k: KeyK.Redo };
+      case 'ArrowLeft':
+        return { k: KeyK.StartOfRow };
+      case 'ArrowRight':
+        return { k: KeyK.EndOfRow };
+      case 'ArrowUp':
+        return { k: KeyK.StartOfColumn };
+      case 'ArrowDown':
+        return { k: KeyK.EndOfColumn };
       default:
         return null;
     }
@@ -518,6 +531,14 @@ export function fromKeyboardEvent(event: {
         return !event.shiftKey ? KeyK.ArrowUp : KeyK.ShiftArrowUp;
       case 'ArrowDown':
         return !event.shiftKey ? KeyK.ArrowDown : KeyK.ShiftArrowDown;
+      case 'Home':
+        return KeyK.StartOfRow;
+      case 'End':
+        return KeyK.EndOfRow;
+      case 'PageUp':
+        return KeyK.StartOfColumn;
+      case 'PageDown':
+        return KeyK.EndOfColumn;
       case ' ':
         return KeyK.Space;
       case 'Tab':
