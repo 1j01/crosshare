@@ -24,6 +24,8 @@ export const LoadButton = (props: {
     const wordlistRef = ref(storage, 'worddb.json');
     getDownloadURL(wordlistRef)
       .then(function (url: string) {
+        console.log('Overriding word list URL')
+        url = "worddb.json"
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'json';
         xhr.onload = async () => {
