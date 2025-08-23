@@ -1,0 +1,41 @@
+{
+  "words": [
+    "crosshare",
+    "devcontainers",
+    "firestore",
+    "flac",
+    "webp"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    ".history",
+    "playwright-report",
+    "test-results",
+    "blob-report",
+    "playwright/.cache",
+    "tests/*-snapshots",
+    ".firebase",
+    "emulator-data",
+    "firestore-coverage.html",
+    "dist",
+    "lib",
+    "*.log",
+    "*.svg",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.webp",
+    "*.ico",
+    "*.mp3",
+    "*.mp4",
+    "*.webm",
+    "*.ogg",
+    "*.ogv",
+    "*.wav",
+    "*.flac",
+    "*.aac",
+    "*.sketch",
+    "*.psd"
+  ]
+}
