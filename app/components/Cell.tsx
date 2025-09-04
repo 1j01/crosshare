@@ -54,19 +54,27 @@ function mixColors(colors: string[]) {
 }
 
 // TODO:
-// - make this a proper component (currently extracted with IDE refactor)
-//   - should this take just props and not value?
-// - should this be memoized?
 // - should this include non-superposition rendering or just the SVG part?
 // - don't necessarily need SVG, might be more efficient to do with divs
 // - arrange based on the max number of sub-values in the whole grid
-function CellContent(value: string, props: CellProps) {
+export const CellContent = memo(function CellContent(props: CellProps) {
   // const { colorMode } = useContext(EmbedContext);
   // const darkMode = colorMode === EmbedColorMode.Dark;
   // console.log(darkMode, colorMode);
   const darkMode = true; // TODO: respond to theme (maybe move blend mode to CSS?)
   const angleOffset = Math.PI * 1.2; // radians
   const svgSize = 100;
+
+  // TODO: DRY
+  const filledValue =
+    props.active && props.isEnteringRebus
+      ? (props.rebusValue ?? '')
+      : props.value.trim();
+  const value =
+    props.active && props.isEnteringRebus
+      ? filledValue
+      : filledValue || props.autofill;
+
   return <div
     style={{
       fontSize: `${1.0 / Math.max(value.length - 0.4, 1)}em`,
@@ -78,29 +86,29 @@ function CellContent(value: string, props: CellProps) {
         <span className={styles.cursor} />
       </>
     ) : (
-        value.includes("/") ? (
-          <svg viewBox={`0 0 ${svgSize} ${svgSize}`} className={styles.svg}>
-            {value.split("/").map((part, idx, arr) => (
-              <text
-                key={idx}
-                x={Math.sin(angleOffset + (idx * Math.PI * 2) / arr.length) * svgSize/4 + svgSize/2}
-                y={Math.cos(angleOffset + (idx * Math.PI * 2) / arr.length) * svgSize/4 + svgSize/2}
-                textAnchor="middle"
-                dominantBaseline="central"
-                fontSize={svgSize / Math.pow(arr.length, 0.4)}
-                // fill="currentColor"
-                fill={SUB_VALUE_COLORS[idx % SUB_VALUE_COLORS.length]}
-                style={{ mixBlendMode: darkMode ? 'lighten' : 'multiply' }}
-                className={styles.svgText}
-              >
-                {part}
-              </text>
-            ))}
+      value.includes("/") ? (
+        <svg viewBox={`0 0 ${svgSize} ${svgSize}`} className={styles.svg}>
+          {value.split("/").map((part, idx, arr) => (
+            <text
+              key={idx}
+              x={Math.sin(angleOffset + (idx * Math.PI * 2) / arr.length) * svgSize / 4 + svgSize / 2}
+              y={Math.cos(angleOffset + (idx * Math.PI * 2) / arr.length) * svgSize / 4 + svgSize / 2}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize={svgSize / Math.pow(arr.length, 0.4)}
+              // fill="currentColor"
+              fill={SUB_VALUE_COLORS[idx % SUB_VALUE_COLORS.length]}
+              style={{ mixBlendMode: darkMode ? 'lighten' : 'multiply' }}
+              className={styles.svgText}
+            >
+              {part}
+            </text>
+          ))}
         </svg>
-        ) : (value)
+      ) : (value)
     )}
   </div>;
-}
+});
 
 export const Cell = memo(function Cell(props: CellProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -262,7 +270,7 @@ export const Cell = memo(function Cell(props: CellProps) {
               ) : (
                 ''
               )}
-              {CellContent(value, props)}
+              {<CellContent {...props} />}
             </div>
           </>
         ) : (
