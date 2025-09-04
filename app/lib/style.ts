@@ -27,6 +27,20 @@ export const VERIFIED_COLOR = mix(adjustHue(PRIMARY, 180), 'black', 0.3);
 
 const DARK_MODE_WHITE = '#d0d0d0';
 
+export const SUB_VALUE_COLORS = [
+  '#e74c3c',
+  '#2980b9',
+  '#f39c12',
+  '#27ae2e',
+  '#9a31c7',
+  '#2c3e50',
+  '#d35400',
+  '#16a085',
+  '#7a0c00',
+  '#0004f1',
+  '#db77cb',
+];
+
 const readableColor = (color: string, darkMode: boolean) => {
   if (readableColorIsBlack(color)) {
     return '#000';
