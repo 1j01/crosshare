@@ -27,6 +27,7 @@ interface CellProps {
   isSelecting: boolean;
   styles: string[];
   value: string;
+  totalAlternates: number;
   number: string;
   row: number;
   column: number;
@@ -56,7 +57,6 @@ function mixColors(colors: string[]) {
 // TODO:
 // - should this include non-superposition rendering or just the SVG part?
 // - don't necessarily need SVG, might be more efficient to do with divs
-// - arrange based on the max number of sub-values in the whole grid
 export const CellContent = memo(function CellContent(props: CellProps) {
   // const { colorMode } = useContext(EmbedContext);
   // const darkMode = colorMode === EmbedColorMode.Dark;
@@ -88,15 +88,14 @@ export const CellContent = memo(function CellContent(props: CellProps) {
     ) : (
       value.includes("/") ? (
         <svg viewBox={`0 0 ${svgSize} ${svgSize}`} className={styles.svg}>
-          {value.split("/").map((part, idx, arr) => (
+          {value.split("/").map((part, idx, _arr) => (
             <text
               key={idx}
-              x={Math.sin(angleOffset + (idx * Math.PI * 2) / arr.length) * svgSize / 4 + svgSize / 2}
-              y={Math.cos(angleOffset + (idx * Math.PI * 2) / arr.length) * svgSize / 4 + svgSize / 2}
+              x={Math.sin(angleOffset + (idx * Math.PI * 2) / props.totalAlternates) * svgSize / 4 + svgSize / 2}
+              y={Math.cos(angleOffset + (idx * Math.PI * 2) / props.totalAlternates) * svgSize / 4 + svgSize / 2}
               textAnchor="middle"
               dominantBaseline="central"
-              fontSize={svgSize / Math.pow(arr.length, 0.4)}
-              // fill="currentColor"
+              fontSize={svgSize / Math.pow(props.totalAlternates, 0.4)}
               fill={SUB_VALUE_COLORS[idx % SUB_VALUE_COLORS.length]}
               style={{ mixBlendMode: darkMode ? 'lighten' : 'multiply' }}
               className={styles.svgText}

@@ -103,6 +103,8 @@ export const GridView = ({
     [dispatch]
   );
 
+  // When the puzzle is published and has multiple solutions,
+  // it has props.answers and possibly props.showAlternates.
   let altToShow: string[] = [];
   if (props.answers && props.showAlternates?.length) {
     altToShow = [...props.answers];
@@ -113,6 +115,15 @@ export const GridView = ({
       });
     }
   }
+
+  // During authoring, alternate solutions are part of the cell values,
+  // slash-delimited.
+  // TODO: clarify variable names wrt authoring vs published puzzle
+  // and "alternate solutions" might imply excluding one of them as "primary"
+  const totalAlternates = grid.cells.reduce((acc, cell) => {
+    const parts = cell.split('/');
+    return Math.max(acc, parts.length);
+  }, 1);
 
   const cells = new Array<ReactNode>();
   for (const [idx, cellValue] of grid.cells.entries()) {
@@ -173,6 +184,7 @@ export const GridView = ({
         onMouseDown={startSelection}
         onMouseEnter={updateSelection}
         value={toDisplay}
+        totalAlternates={totalAlternates}
         isBlock={cellValue === BLOCK}
         isOpposite={isOpposite}
         isVerified={props.verifiedCells?.has(idx) || showAsVerified}
