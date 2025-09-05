@@ -252,7 +252,8 @@ export function entriesFromCells(
         }
 
         const entryCells: Position[] = [];
-        let entryPattern = '';
+        const cellVals: string[] = [];
+        let maxSolutions = 1;
         let isComplete = true;
         let xt = x;
         let yt = y;
@@ -269,20 +270,36 @@ export function entriesFromCells(
           }
           entry[dir] = {
             entryIndex: entries.length,
-            wordIndex: entryPattern.length,
+            wordIndex: cellVals.join("").length, // ignoring multiple solution support for now
             cellIndex: wordlen,
           };
           if (cellVal === EMPTY || cellVal === '') {
             isComplete = false;
           }
           entryCells.push({ row: yt, col: xt });
-          entryPattern += cellVal;
+          cellVals.push(cellVal);
+          maxSolutions = Math.max(maxSolutions, (cellVal.match(/\//g) || []).length + 1);
+
           xt += xincr;
           yt += yincr;
           wordlen += 1;
 
           if (iBars.has(cellId)) {
             break;
+          }
+        }
+        let entryPattern = '';
+        for (let solutionIndex = 0; solutionIndex < maxSolutions; solutionIndex++) {
+          if (solutionIndex > 0) {
+            entryPattern += '/';
+          }
+          for (const cellVal of cellVals) {
+            if (cellVal.includes('/')) {
+              const parts = cellVal.split('/');
+              entryPattern += parts[solutionIndex] || '_';
+            } else {
+              entryPattern += cellVal;
+            }
           }
         }
         entries.push({

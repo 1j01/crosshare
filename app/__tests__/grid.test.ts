@@ -221,6 +221,129 @@ test('test entriesFromCells', () => {
       ],
     ]
   `);
+
+  expect(
+    entriesFromCells(2, 2, ['A/A2', 'B', '/C2', 'D/'], new Set(), new Set())
+  ).toMatchInlineSnapshot(`
+    [
+      [
+        {
+          "cells": [
+            {
+              "col": 0,
+              "row": 0,
+            },
+            {
+              "col": 1,
+              "row": 0,
+            },
+          ],
+          "completedWord": "AB/A2B",
+          "direction": 0,
+          "index": 0,
+          "pattern": "AB/A2B",
+        },
+        {
+          "cells": [
+            {
+              "col": 0,
+              "row": 0,
+            },
+            {
+              "col": 0,
+              "row": 1,
+            },
+          ],
+          "completedWord": "A_/A2C2",
+          "direction": 1,
+          "index": 1,
+          "pattern": "A_/A2C2",
+        },
+        {
+          "cells": [
+            {
+              "col": 1,
+              "row": 0,
+            },
+            {
+              "col": 1,
+              "row": 1,
+            },
+          ],
+          "completedWord": "BD/B_",
+          "direction": 1,
+          "index": 2,
+          "pattern": "BD/B_",
+        },
+        {
+          "cells": [
+            {
+              "col": 0,
+              "row": 1,
+            },
+            {
+              "col": 1,
+              "row": 1,
+            },
+          ],
+          "completedWord": "_D/C2_",
+          "direction": 0,
+          "index": 3,
+          "pattern": "_D/C2_",
+        },
+      ],
+      [
+        [
+          {
+            "cellIndex": 0,
+            "entryIndex": 0,
+            "wordIndex": 0,
+          },
+          {
+            "cellIndex": 0,
+            "entryIndex": 1,
+            "wordIndex": 0,
+          },
+        ],
+        [
+          {
+            "cellIndex": 1,
+            "entryIndex": 0,
+            "wordIndex": 4,
+          },
+          {
+            "cellIndex": 0,
+            "entryIndex": 2,
+            "wordIndex": 0,
+          },
+        ],
+        [
+          {
+            "cellIndex": 0,
+            "entryIndex": 3,
+            "wordIndex": 0,
+          },
+          {
+            "cellIndex": 1,
+            "entryIndex": 1,
+            "wordIndex": 4,
+          },
+        ],
+        [
+          {
+            "cellIndex": 1,
+            "entryIndex": 3,
+            "wordIndex": 3,
+          },
+          {
+            "cellIndex": 1,
+            "entryIndex": 2,
+            "wordIndex": 1,
+          },
+        ],
+      ],
+    ]
+  `);
 });
 
 test('test getEntryToClueMap', () => {
