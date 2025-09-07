@@ -64,6 +64,7 @@ export const CellContent = memo(function CellContent(props: CellProps) {
   const darkMode = true; // TODO: respond to theme (maybe move blend mode to CSS?)
   const angleOffset = Math.PI * 1.2; // radians
   const svgSize = 100;
+  const radius = svgSize * 0.3;
 
   // TODO: DRY
   const filledValue =
@@ -91,8 +92,8 @@ export const CellContent = memo(function CellContent(props: CellProps) {
           {value.split("/").map((part, idx, _arr) => (
             <text
               key={idx}
-              x={Math.sin(angleOffset + (idx * Math.PI * 2) / props.totalAlternates) * svgSize / 4 + svgSize / 2}
-              y={Math.cos(angleOffset + (idx * Math.PI * 2) / props.totalAlternates) * svgSize / 4 + svgSize / 2}
+              x={Math.sin(angleOffset - (idx * Math.PI * 2) / props.totalAlternates) * radius + svgSize / 2}
+              y={Math.cos(angleOffset - (idx * Math.PI * 2) / props.totalAlternates) * radius + svgSize / 2}
               textAnchor="middle"
               dominantBaseline="middle"
               fontSize={svgSize / Math.pow(props.totalAlternates, 0.4)}
